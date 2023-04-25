@@ -13,16 +13,6 @@ void menuGestionUsuarios()
 	printf("\n 2. Iniciar sesion.");
 	printf("\n 3. Salir.");
 }
-void menuSubastaAdmin()
-{
-	printf("\n====== menu admin======");
-	printf("\n 1. Registrar producto");
-	printf("\n 2. Listar productos a ofertar.");
-	printf("\n 3. Abrir o Cerrar subasta.");
-	printf("\n 4. Consultar producto por codigo.");
-	printf("\n 5. Consultar producto acual subastadose.");
-	printf("\n 6. Salir.");
-}
 
 void menuSubastaCliente()
 {
