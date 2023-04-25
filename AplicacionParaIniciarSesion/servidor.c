@@ -48,19 +48,20 @@ respuesta_login *
 iniciarsesion_1_svc(datos_login *argp, struct svc_req *rqstp)
 {
 	static respuesta_login  result;
-
+	int bandera = 0;
 	printf("\n invocando a iniciar sesión");
 	printf("\n login %s", argp->login); 
 	printf("\n contrasenia %s", argp->contrasenia); 
 	
 	for(int i=0;i<5;i++){
 		if(strcmp(vectorUsuarios[i].login  ,argp->login)==0){
+			bandera = 1;
 			if(strcmp(vectorUsuarios[i].contrasenia ,argp->contrasenia)==0){
-				
 				if (vectorUsuarios[i].tipo == ADMIN)
 				{
 					result.codigo = 0; // valor para admin
 					strcpy(result.mensaje, "ES ADMIN");
+					break;
 				}
 				else if (vectorUsuarios[i].tipo == CLIENTE)
 				{
@@ -70,17 +71,19 @@ iniciarsesion_1_svc(datos_login *argp, struct svc_req *rqstp)
 				}
 			}		
 			else{
-				// contraseña incorrecta
-				result.codigo = 2;
-				strcpy(result.mensaje, "CONTRASEÑA INCORRECTA");
+				result.codigo = 2; // contraseña incorrecta
+				strcpy(result.mensaje, "CONTRA INCORRECTA.");
+				break;
 			}
 		}
-		else{
-			//no está registrado
-			result.codigo = 3;					
-			strcpy(result.mensaje, "\nNO ESTÁ REGISTRADO");
-		}
 	}
-
+	if (bandera==0)
+	{
+		//no está registrado
+		result.codigo = 3;					
+		strcpy(result.mensaje, "NO ESTÁ REGISTRADO");
+	}
+	
+	printf("\n%s  %d \n",result.mensaje ,result.codigo);
 	return &result;
 }
