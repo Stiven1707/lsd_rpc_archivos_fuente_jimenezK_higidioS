@@ -57,6 +57,7 @@ gestion_usuarios_1(char *host)
 	bool_t  *result_9;
 	oferta  ofertarproductosubasta_2_arg;
 	int opcion;
+	int opcionInicio;
 
 
 #ifndef	DEBUG
@@ -65,23 +66,21 @@ gestion_usuarios_1(char *host)
 		clnt_pcreateerror (host);
 		exit (1);
 	}
-#endif	/* DEBUG */
-
-	result_1 = registrarusuario_1(&registrarusuario_1_arg, clnt1);
-	if (result_1 == (bool_t *) NULL) {
-		clnt_perror(clnt1, "call failed");
-	}
-	result_2 = iniciarsesion_1(&iniciarsesion_1_arg, clnt1);
-	if (result_2 == (respuesta_login *) NULL) {
-		clnt_perror(clnt1, "call failed");
-	}
-	#ifndef	DEBUG
 	clnt2 = clnt_create (host, gestion_subastas, gestion_subastas_version_1, "tcp");
 	if (clnt2 == NULL) {
 		clnt_pcreateerror(host);
 		exit (1);
 	}
 #endif	/* DEBUG */
+	/*result_1 = registrarusuario_1(&registrarusuario_1_arg, clnt1);
+	if (result_1 == (bool_t *) NULL) {
+		clnt_perror(clnt1, "call failed");
+	}
+	result_2 = iniciarsesion_1(&iniciarsesion_1_arg, clnt1);
+	if (result_2 == (respuesta_login *) NULL) {
+		clnt_perror(clnt1, "call failed");
+	}*/
+	
 	//invocacion de los procedimientos remotos
 	do
 	{
@@ -94,7 +93,8 @@ gestion_usuarios_1(char *host)
 			//TODO
 			break;
 		case 2:
-			while (result_2->codigo != 0) {
+			do
+			{
 				printf("\nIngrese el login: ");
 				scanf("%s", iniciarsesion_1_arg.login);
 				fflush(stdin);
@@ -103,9 +103,8 @@ gestion_usuarios_1(char *host)
 				fflush(stdin);
 				result_2 = iniciarsesion_1(&iniciarsesion_1_arg, clnt1);
 				fflush(stdin);
-				if(result_2->codigo != 0){
-					printf("\n%s",result_2->mensaje);
-				}
+				printf("\n%s",result_2->mensaje);
+				printf("\n%d",result_2->codigo);
 				if (result_2 == (respuesta_login *) NULL) {
 					clnt_perror(clnt1, "call failed");
 				}
@@ -115,8 +114,8 @@ gestion_usuarios_1(char *host)
 					{
 						menuSubastaAdmin();
 						printf("\n Digite una opcion: ");
-						scanf("%d", &opcion);
-						switch (opcion)
+						scanf("%d", &opcionInicio);
+						switch (opcionInicio)
 						{
 						case 1:
 							printf("Digite el codigo: "); 
@@ -157,11 +156,12 @@ gestion_usuarios_1(char *host)
 						default:
 							break;
 						}
-					} while (opcion != 3);
+					} while (opcionInicio != 3);
 					
 				}
 	
-			}
+			} while (result_2->codigo != 0);
+			
 			break;
 		
 		default:
@@ -169,58 +169,6 @@ gestion_usuarios_1(char *host)
 		}
 	} while (opcion!=3);
 	 
-	
-	if (result_2->codigo == 0)
-	{
-		do
-		{
-			menuSubastaCliente();
-			printf("\n Digite una opcion: ");
-			scanf("%d", &opcion);
-			switch (opcion)
-			{
-			case 1:
-				printf("Digite el codigo: "); 
-				scanf("%d", &registrar_producto_2_arg.codigoProducto);
-
-				printf("Digite el nombre: "); 
-				scanf("%s", registrar_producto_2_arg.nombre);
-
-				printf("Digite el valor: "); 
-				scanf("%f",&registrar_producto_2_arg.valor); 
-				result_3 = registrar_producto_2(&registrar_producto_2_arg, clnt2); 
-				if (result_3 == (bool_t *) NULL) { 
-					clnt_perror (clnt2, "call failed");
-				} 
-				else if(*result_3==TRUE)
-				{
-					printf("\n Producto registrado exitosamente");
-				}	
-				break;
-			case 2:
-				printf("Digite el id: ");
-				scanf("%d", &consultarproducto_2_arg);
-
-				result_7 = consultarproducto_2(&consultarproducto_2_arg, clnt2);
-				if (result_7 == (nodo_producto *) NULL) {
-					clnt_perror (clnt2, "call failed");
-				}
-				else
-				{
-					printf("\nCodigo: %d", result_7->codigoProducto);
-					printf("\nNombre: %s", result_7->nombre);
-					printf("\nValor: %f", result_7->valor);
-				}
-				break;
-			case 3:
-				printf("\nSaliendo del programa.");				
-				break;
-			default:
-				break;
-			}
-		} while (opcion != 3);
-		
-	}
 	
 	result_3 = registrar_producto_2(&registrar_producto_2_arg, clnt2);
 	if (result_3 == (bool_t *) NULL) {

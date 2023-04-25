@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.css": "css",
+        "interface1.h": "c"
+    }
+}

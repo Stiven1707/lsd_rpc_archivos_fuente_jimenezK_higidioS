@@ -7,7 +7,7 @@
 #define _INTERFACE1_H_RPCGEN
 
 #include <rpc/rpc.h>
-
+#include "string.h"
 
 #ifdef __cplusplus
 extern "C" {
