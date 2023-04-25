@@ -109,22 +109,11 @@ gestion_usuarios_1(char *host)
 						switch (opcion)
 						{
 						case 1:
-							printf("Digite el codigo: "); 
-							scanf("%d", &registrar_producto_2_arg.codigoProducto);
-
-							printf("Digite el nombre: "); 
-							scanf("%s", registrar_producto_2_arg.nombre);
-
-							printf("Digite el valor: "); 
-							scanf("%f",&registrar_producto_2_arg.valor); 
-							result_3 = registrar_producto_2(&registrar_producto_2_arg, clnt2); 
-							if (result_3 == (bool_t *) NULL) { 
-								clnt_perror (clnt2, "call failed");
-							} 
-							else if(*result_3==TRUE)
-							{
-								printf("\n Producto registrado exitosamente");
-							}	
+							result_4= listarproductosdisponiblessubastar_2(&listarproductosdisponiblessubastar_2_arg,clnt2);
+							printf("\nProductos disponibles para subasta:\n");
+							for (int i = 0; i < result_4->vector_productos; i++) {
+								printf("Codigo: %d\n", result_4->vector_productos[i].codigoProducto);
+                    		}
 							break;
 						case 2:
 							printf("Digite el id: ");
@@ -142,12 +131,17 @@ gestion_usuarios_1(char *host)
 							}
 							break;
 						case 3:
+							break;
+						case 4:
+							break;	
+						
+						case 5:
 							printf("\nSaliendo del programa.");				
 							break;
 						default:
 							break;
 						}
-					} while (opcion != 3);
+					} while (opcion != 5);
 					
 				}
 	
