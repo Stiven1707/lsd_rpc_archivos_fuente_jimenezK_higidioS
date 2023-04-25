@@ -5,15 +5,30 @@
  */
 
 #include "interface2.h"
+#include <stdlib.h>
+#include <stdio.h>
+
+
+// Vector para almacenar los productos registrados
+nodo_producto vectorProductos[5];
+
+// Índice para llevar cuenta de cuántos productos
+int posicionProductoAregistrar=0;
 
 bool_t *
 registrar_producto_2_svc(nodo_producto *argp, struct svc_req *rqstp)
 {
 	static bool_t  result;
-
-	/*
-	 * insert server code here
-	 */
+	printf("Invocando a registrar producto");
+	printf("\n codigo del producto %d",argp->codigoProducto);
+	if(posicionProductoAregistrar<5){
+		vectorProductos[posicionProductoAregistrar]=*argp;
+		result=TRUE;
+		posicionProductoAregistrar++;
+	}
+	else{
+		result=FALSE;
+	}
 
 	return &result;
 }
@@ -21,12 +36,11 @@ registrar_producto_2_svc(nodo_producto *argp, struct svc_req *rqstp)
 vector_productos *
 listarproductosdisponiblessubastar_2_svc(void *argp, struct svc_req *rqstp)
 {
-	static vector_productos  result;
-
-	/*
-	 * insert server code here
-	 */
-
+	static nodo_producto  result;
+	printf("Invocando a listar productos disponibles");
+	for(int i=0;i<posicionProductoAregistrar;i++){
+			result=vectorProductos[i];
+	}
 	return &result;
 }
 
@@ -34,11 +48,14 @@ bool_t *
 abrircerrarsubasta_2_svc(int *argp, struct svc_req *rqstp)
 {
 	static bool_t  result;
-
-	/*
-	 * insert server code here
-	 */
-
+	printf("invocando a abrir o cerrar una subasta.");
+	 // Buscar el producto correspondiente y cambiar su estado de subasta
+    for (int i = 0; i < posicionProductoAregistrar; i++) {
+        if (vectorProductos[i].codigoProducto == *argp) {
+            vectorProductos[i].estadoProd = !vectorProductos[i].estadoProd; 
+            break;
+        }
+    }
 	return &result;
 }
 
@@ -46,11 +63,8 @@ vector_productos *
 listarproductostodos_2_svc(void *argp, struct svc_req *rqstp)
 {
 	static vector_productos  result;
-
-	/*
-	 * insert server code here
-	 */
-
+	printf("Invocando a listar productos disponibles");
+	result=vectorProductos;
 	return &result;
 }
 
