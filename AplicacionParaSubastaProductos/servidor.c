@@ -188,7 +188,7 @@ ofertarproductosubasta_2_svc(oferta *argp, struct svc_req *rqstp)
 		{
 			// Actualizar la oferta actual de la subasta
 			subasta_actual.oferta_actual.valor = argp->valor;
-      subasta_actual.oferta_actual.objUsuario_comprador_actual = argp->objUsuario_comprador_actual;
+      		subasta_actual.oferta_actual.objUsuario_comprador_actual = argp->objUsuario_comprador_actual;
 			result = TRUE;
 		}
 	}	
