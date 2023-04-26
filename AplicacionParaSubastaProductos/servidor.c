@@ -147,7 +147,7 @@ bool_t *
 ofertarproductosubasta_2_svc(oferta *argp, struct svc_req *rqstp)
 {
 	static bool_t result;
-	printf("Invocando a ofertar producto en subasta");
+	printf("\nInvocando a ofertar producto en subasta");
 	// Buscar el producto correspondiente y validar la oferta realizada
 	for (int i = 0; i < posicionProductoAregistrar; i++) {
 		if (vectorProductos[i].estadoProd == SI) {

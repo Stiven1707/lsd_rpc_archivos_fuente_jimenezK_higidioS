@@ -191,10 +191,13 @@ gestion_usuarios_1(char *host)
 							}
 							else{
 								printf("\nCodigo: %d", result_8->prod.codigoProducto);
+								printf("\nNombre: %s", result_8->prod.nombre);
+								printf("\nValor: %s", result_8->prod.valor);
+								
 							}
 							break;
 						case 4:
-							printf("Digite el valor que quiere subastar: ");
+							printf("\nDigite el valor que quiere subastar al producto: ");
 							scanf("%f", &ofertarproductosubasta_2_arg);
 							result_9 = ofertarproductosubasta_2(&ofertarproductosubasta_2_arg, clnt2);
 							if (result_9 == (bool_t *) NULL) {
