@@ -43,6 +43,7 @@ typedef struct datos_login datos_login;
 struct respuesta_login {
 	char mensaje[MAXNOM];
 	int codigo;
+	datos_completos objUsuario;
 };
 typedef struct respuesta_login respuesta_login;
 

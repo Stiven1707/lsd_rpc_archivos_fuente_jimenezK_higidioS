@@ -70,5 +70,7 @@ xdr_respuesta_login (XDR *xdrs, respuesta_login *objp)
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->codigo))
 		 return FALSE;
+	 if (!xdr_datos_completos (xdrs, &objp->objUsuario))
+		 return FALSE;
 	return TRUE;
 }

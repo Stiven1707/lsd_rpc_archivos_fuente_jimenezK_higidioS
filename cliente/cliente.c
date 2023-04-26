@@ -230,9 +230,17 @@ gestion_usuarios_1(char *host)
 								}else
 								{
 									// Construir el datos_completos_comprador con la información del completa del usuario
-									//memcpy(&ofertarproductosubasta_2_arg.objUsuario_comprador_actual, &[Aqui onj con datos], sizeof(datos_completos_comprador));
-									ofertarproductosubasta_2_arg.objUsuario_comprador_actual.tipo =result_2->codigo;
-									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.login, iniciarsesion_1_arg.login);
+									memcpy(&ofertarproductosubasta_2_arg.objUsuario_comprador_actual, &result_2->objUsuario, sizeof(datos_completos_comprador));
+									// Copiar los datos
+									/*
+									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.nombres, result_2->objUsuario.nombres);
+									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.apellidos, result_2->objUsuario.apellidos);
+									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.correo, result_2->objUsuario.correo);
+									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.telefono, result_2->objUsuario.telefono);
+									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.login, result_2->objUsuario.login);
+									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.contrasenia, result_2->objUsuario.contrasenia);
+									ofertarproductosubasta_2_arg.objUsuario_comprador_actual.tipo = result_2->objUsuario.tipo;
+									*/
 									printf("\nDigite el valor que quiere subastar al producto: ");
 									scanf("%f", &ofertarproductosubasta_2_arg.valor);
 									result_9 = ofertarproductosubasta_2(&ofertarproductosubasta_2_arg, clnt2);

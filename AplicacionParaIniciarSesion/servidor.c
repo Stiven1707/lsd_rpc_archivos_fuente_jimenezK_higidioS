@@ -69,6 +69,7 @@ iniciarsesion_1_svc(datos_login *argp, struct svc_req *rqstp)
 				{
 					result.codigo = 1; // valor para cliente
 					strcpy(result.mensaje, "ES CLIENTE");
+					memcpy(&result.objUsuario, &vectorUsuarios[i], sizeof(datos_completos));
 					break;
 				}
 			}		
