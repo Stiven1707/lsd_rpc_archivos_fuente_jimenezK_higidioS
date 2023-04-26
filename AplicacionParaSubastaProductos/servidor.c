@@ -19,13 +19,10 @@ nodo_producto vectorProductos[5] = {
 
 // Índice para llevar cuenta de cuántos productos
 int posicionProductoAregistrar=3;
-// Oferta actual en la subasta
-oferta ofertaActual;
-// Oferta actual en la subasta
-oferta ofertaActual;
 
-// Estado de la subasta
-estado_subasta estadoActual = NUEVA;
+// Declarar la variable global subasta_actual
+nodo_subasta subasta_actual;
+
 
 bool_t *
 registrar_producto_2_svc(nodo_producto *argp, struct svc_req *rqstp)
@@ -72,31 +69,62 @@ listarproductosdisponiblessubastar_2_svc(void *argp, struct svc_req *rqstp)
 bool_t *
 abrircerrarsubasta_2_svc(int *argp, struct svc_req *rqstp)
 {
-	static bool_t result;
-    printf("Invocando a abrir o cerrar una subasta\n");
+    static bool_t result;
+    printf("Invocando a abrir o cerrar subasta para producto %d\n", *argp);
     
-    // Buscar el producto correspondiente y cambiar su estado de subasta
-    for (int i = 0; i < posicionProductoAregistrar; i++) {
+    // Verificar si hay una subasta abierta para otro producto
+    if (subasta_actual.estado == ABIERTA && subasta_actual.prod.codigoProducto != *argp) {
+        printf("Ya hay una subasta abierta para otro producto, no se puede iniciar otra\n");
+        result = FALSE;
+        return &result;
+    }
+    
+    // Verificar si ya existe el producto especificado
+    int indiceProducto = -1;
+    for (int i = 0; i <= posicionProductoAregistrar; i++) {
         if (vectorProductos[i].codigoProducto == *argp) {
-            vectorProductos[i].estadoProd = !vectorProductos[i].estadoProd; 
+            indiceProducto = i;
             break;
         }
     }
+	if (indiceProducto < 0)
+	{
+		result = FALSE;
+		return &result;
+	}
+    // Si ya hay una subasta abierta para el producto, cerrarla
+	if (subasta_actual.estado == ABIERTA && subasta_actual.prod.codigoProducto == *argp) {
+		//si se va a cerrar una subasta y ho hay comparador
+		if (subasta_actual.oferta_actual.objUsuario_comprador_actual.tipo == ADMIN_C)
+		{
+			vectorProductos[indiceProducto].estadoProd = SI; //que vuelva a estra disponible
+		}
+		subasta_actual.estado = CERRADA;
+		printf("Cerrando subasta para producto %d\n", subasta_actual.prod.codigoProducto);
+		result = TRUE;
+	}else
+	{
+			
+		// Si la subasta existente está (cerrada o nueva)y Si el producto esta disponible para subastar
+		// abrir una nueva subasta
+		if ((subasta_actual.estado == CERRADA || subasta_actual.estado == NUEVA) && vectorProductos[indiceProducto].estadoProd == SI) {
+			// Crear la nueva subasta
+			vectorProductos[indiceProducto].estadoProd = NO; //ya no esta disponible para subastar porque ya se va a subastar
+			subasta_actual.prod = vectorProductos[indiceProducto];
+			subasta_actual.oferta_actual.valor = vectorProductos[indiceProducto].valor;
+			subasta_actual.estado = ABIERTA;
+			printf("Abriendo subasta para producto %d\n", subasta_actual.prod.codigoProducto);
+			result = TRUE;
+		} else {
+			printf("No existe el producto especificado o ya hay una subasta cerrada para ese producto\n");
+			result = FALSE;
+		}
+		
+	}
+	
     
-    // Si se abrió la subasta, se inicializa la oferta actual
-    if (vectorProductos[*argp].estadoProd == SI) {
-        ofertaActual.objUsuario_comprador_actual.tipo = CLIENTE_C;
-        ofertaActual.valor = vectorProductos[*argp].valor;
-        estadoActual = ABIERTA;
-    }
-    else {
-        estadoActual = CERRADA;
-    }
-    
-    result = TRUE;
     return &result;
 }
-
 
 vector_productos *
 listarproductostodos_2_svc(void *argp, struct svc_req *rqstp)
@@ -117,7 +145,7 @@ nodo_producto *
 consultarproducto_2_svc(int *argp, struct svc_req *rqstp)
 {
 	static nodo_producto result;
-	printf("Invocando a consultar producto");
+	printf("Invocando a consultar producto\n");
 	// Buscar el producto correspondiente y retornarlo
 	for (int i = 0; i < posicionProductoAregistrar; i++) {
 		if (vectorProductos[i].codigoProducto == *argp) {
@@ -131,46 +159,46 @@ consultarproducto_2_svc(int *argp, struct svc_req *rqstp)
 nodo_subasta *
 consultarproductoandvaloractualsubasta_2_svc(void *argp, struct svc_req *rqstp)
 {
-	static nodo_subasta result;
-	printf("Invocando a consultar producto y valor actual de subasta");
-	// Buscar el producto correspondiente y retornar sus datos de subasta
-	for (int i = 0; i < posicionProductoAregistrar; i++) {
-		if (vectorProductos[i].estadoProd == SI) {
-			result.prod = vectorProductos[i];
-			result.oferta_actual.objUsuario_comprador_actual.tipo = CLIENTE_C; // Se asigna un valor por defecto al usuario comprador
-			result.oferta_actual.valor = vectorProductos[i].valor;
-			result.estado = ABIERTA;
-			break;
-		}
-		else {
-			result.prod = vectorProductos[i];
-			result.estado = CERRADA;
-		}
+    static nodo_subasta result;
+    printf("Invocando a consultar producto y valor actual de subasta\n");
+    
+    // Verificar si hay una subasta abierta en este momento
+    if (subasta_actual.estado == CERRADA) {
+        result.prod.codigoProducto = -1; // Valor sentinela para indicar que no hay subasta abierta
+    }else
+	{
+		// Construir el nodo_subasta con la información del producto en subasta y la oferta actual
+		memcpy(&result, &subasta_actual, sizeof(nodo_subasta));
 	}
-	return &result;
+	
+    
+    
+    return &result;
 }
+
 
 bool_t *
 ofertarproductosubasta_2_svc(oferta *argp, struct svc_req *rqstp)
 {
 	static bool_t result;
-	printf("Invocando a ofertar producto en subasta");
-	// Buscar el producto correspondiente y validar la oferta realizada
-	for (int i = 0; i < posicionProductoAregistrar; i++) {
-		if (vectorProductos[i].estadoProd == SI) {
-			if (argp->valor > vectorProductos[i].valor) {
-				vectorProductos[i].valor = argp->valor;
-				vectorProductos[i].estadoProd = NO; // Se cierra la subasta al aceptar la oferta
-				result = TRUE;
-				break;
-			}
-			else {
-				result = FALSE;
-			}
-		}
-		else {
+	printf("Invocando a ofertar producto en subasta\n");
+
+	// Verificar si la subasta está abierta
+	if (subasta_actual.estado == CERRADA) {
+		result = FALSE;
+	}else
+	{
+		// Verificar si la oferta recibida es mayor que la oferta actual
+		if (argp->valor <= subasta_actual.oferta_actual.valor) {
 			result = FALSE;
+		}else
+		{
+			// Actualizar la oferta actual de la subasta
+			subasta_actual.oferta_actual.valor = argp->valor;
+            subasta_actual.oferta_actual.objUsuario_comprador_actual = argp->objUsuario_comprador_actual;
+			result = TRUE;
 		}
-	}
+	}	
 	return &result;
 }
+
