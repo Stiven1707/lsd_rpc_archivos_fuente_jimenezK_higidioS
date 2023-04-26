@@ -17,7 +17,7 @@ extern "C" {
 #define MAX_CAN_PROD 5
 #define MAXCORREO 50
 #define MAXTEL 10
-
+ 
 enum estado_subasta {
 	NUEVA = 0,
 	ABIERTA = 1,

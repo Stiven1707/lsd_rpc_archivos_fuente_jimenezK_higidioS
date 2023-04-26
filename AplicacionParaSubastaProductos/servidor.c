@@ -9,15 +9,16 @@
 #include <stdio.h>
 
 
-// Vector para almacenar los productos registrados
-nodo_producto vectorProductos[5]= {
-	{1, "Mesa", 5000.0, NO},
-	{2, "Carro", 6000.0, NO},
-	{3, "Plato", 7000.0, SI}
+// Vector para almacenar los productos registrados 
+nodo_producto vectorProductos[5] = {
+        {1, "Mesa", 10.0, SI},
+        {2, "Carro", 20.0, SI},
+        {3, "Plato", 30.0, SI}
 };
 
+
 // Índice para llevar cuenta de cuántos productos
-int posicionProductoAregistrar=0;
+int posicionProductoAregistrar=3;
 // Oferta actual en la subasta
 oferta ofertaActual;
 // Oferta actual en la subasta
@@ -48,8 +49,17 @@ vector_productos *
 listarproductosdisponiblessubastar_2_svc(void *argp, struct svc_req *rqstp)
 {
 	static vector_productos result;
+	printf("\nInvocando a listar productos disponibles para subastar");
+
 	int posicionResultado = 0;
     for (int i = 0; i < posicionProductoAregistrar; i++) {
+		printf("\n************************************");
+		printf("\n %d",vectorProductos[i].codigoProducto);
+		printf("\n %s",vectorProductos[i].nombre);
+		printf("\n %d",vectorProductos[i].estadoProd);
+		printf("\n %f",vectorProductos[i].valor);
+		printf("\n************************************");
+
         if (vectorProductos[i].estadoProd == SI) {
             result.vector_productos[posicionResultado] = vectorProductos[i];
             posicionResultado++;

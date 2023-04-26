@@ -12,7 +12,7 @@ datos_completos vectorUsuarios[5] = {
 	{"María", "González", "maria.gonzalez@gmail.com", "555-5678", "mariagonzalez", "password2", CLIENTE},
 	{"Administrador", "Sistema", "admin@sistema.com", "555-9012", "admin", "password3", ADMIN}
 };
-int posUsuarioARegistrar=0;
+int posUsuarioARegistrar=3;
 bool_t *
 registrarusuario_1_svc(datos_completos *argp, struct svc_req *rqstp)
 {

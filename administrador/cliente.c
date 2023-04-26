@@ -200,7 +200,7 @@ gestion_usuarios_1(char *host)
 
 							printf("Digite el valor: "); 
 							scanf("%f",&registrar_producto_2_arg.valor); 
-							registrar_producto_2_arg.estadoProd = NO;
+							registrar_producto_2_arg.estadoProd = SI;
 							result_3 = registrar_producto_2(&registrar_producto_2_arg, clnt2); 
 							if (result_3 == (bool_t *) NULL) { 
 								clnt_perror (clnt2, "call failed");
@@ -220,15 +220,21 @@ gestion_usuarios_1(char *host)
 							}
 							// Imprimir la lista de productos
 							printf("\n====== Lista de productos a ofertar ======\n");
+							int i=0;
 							if (result_4->vector_productos != NULL) {
-								for (int i = 0; i < MAX_CAN_PROD i++) {
+								while (i<MAX_CAN_PROD && result_4->vector_productos[i].codigoProducto != 0)
+								{
 									printf("Codigo: %d\n", result_4->vector_productos[i].codigoProducto);
 									printf("Nombre: %s\n", result_4->vector_productos[i].nombre);
-									printf("Actualmente se está subastando: %s\n", result_4->vector_productos[i].estadoProd == SI ? "SI" : "NO");
+									printf("Actualmente esta disponible para subastar: %s\n", result_4->vector_productos[i].estadoProd == SI ? "SI" : "NO");
 									printf("Precio base: %.2f\n", result_4->vector_productos[i].valor);
 									printf("====================\n");
+									i++;
 								}
-							} else {
+								
+							} 
+							if(i==0) 
+							{
 								printf("No hay productos disponibles para ofertar\n");
 							}
 							break;
@@ -254,8 +260,9 @@ gestion_usuarios_1(char *host)
 							else
 							{
 								printf("\nCodigo: %d", result_7->codigoProducto);
-								printf("\nNombre: %s", result_7->nombre);
-								printf("\nValor: %f", result_7->valor);
+								printf("\nNombre: %s", result_7->nombre);									
+								printf("\nActualmente esta disponible para subastar: %s", result_7->estadoProd == SI ? "SI" : "NO");						
+								printf("\nPrecio base: %.2f\n", result_7->valor);
 							}			
 							break;
 						case 5:

@@ -158,7 +158,10 @@ gestion_usuarios_1(char *host)
 						switch (opcion)
 						{
 						case 1:
-							result_4= listarproductosdisponiblessubastar_2(&listarproductosdisponiblessubastar_2_arg,clnt2);
+							result_4= listarproductosdisponiblessubastar_2((void*)&listarproductosdisponiblessubastar_2_arg,clnt2);
+							if (result_4 == (vector_productos *) NULL) {
+								clnt_perror(clnt2, "call failed");
+							}
 							printf("\nProductos disponibles para subasta:\n");
 							for (int i = 0; i < MAX_CAN_PROD; i++) {
 								printf("Codigo: %d\n", result_4->vector_productos[i].codigoProducto);
