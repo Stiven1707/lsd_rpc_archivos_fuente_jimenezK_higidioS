@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.css": "css",
-        "interface1.h": "c"
+        "interface1.h": "c",
+        "interface2.h": "c"
     }
 }
