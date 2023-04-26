@@ -20,7 +20,7 @@ void menuSubastaAdmin()
 	printf("\n 2. Listar productos a ofertar.");
 	printf("\n 3. Abrir o Cerrar subasta.");
 	printf("\n 4. Consultar producto por codigo.");
-	printf("\n 5. Consultar producto acual subastadose.");
+	printf("\n 5. Consultar producto actual subastadose.");
 	printf("\n 6. Salir.");
 }
 
@@ -29,45 +29,63 @@ void menuSubastaCliente()
 	printf("\n====== menu cliente======");
 	printf("\n 1. Listar todos los productos.");
 	printf("\n 2. Consultar producto por codigo.");
-	printf("\n 3. Consultar producto acual subastadose.");
+	printf("\n 3. Consultar producto actual subastadose.");
 	printf("\n 4. Ofertar al producto actual subastandose.");
 	printf("\n 5. Salir.");
 }
 
 datos_completos registrarAdmin(){
 	datos_completos  objUsuario;
-	// Limpiar búfer de entrada
-	fgets(objUsuario.nombres, MAXNOM, stdin);
-	// Ingresar datos del administrador
+	// Ingresar datos del cliente
+	while(getchar() != '\n');
 	printf("\nIngrese nombres: ");
 	fgets(objUsuario.nombres, MAXNOM, stdin);
 	objUsuario.nombres[strcspn(objUsuario.nombres, "\n")] = '\0';
-	fflush(stdin);
-
-	printf("\nIngrese apellidos: ");
+	if (strlen(objUsuario.nombres) == MAXNOM-1 && objUsuario.nombres[MAXNOM-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
+	
+	printf("Ingrese apellidos: ");
 	fgets(objUsuario.apellidos, MAXNOM, stdin);
 	objUsuario.apellidos[strcspn(objUsuario.apellidos, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.apellidos) == MAXNOM-1 && objUsuario.apellidos[MAXNOM-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
 	
 	printf("Ingrese correo electrónico: ");
 	fgets(objUsuario.correo, MAXCORREO, stdin);
 	objUsuario.correo[strcspn(objUsuario.correo, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.correo) == MAXCORREO-1 && objUsuario.correo[MAXCORREO-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
 	
 	printf("Ingrese teléfono: ");
 	fgets(objUsuario.telefono, MAXTEL, stdin);
 	objUsuario.telefono[strcspn(objUsuario.telefono, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.telefono) == MAXTEL-1 && objUsuario.telefono[MAXTEL-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
 	
 	printf("Ingrese nombre de usuario: ");
 	fgets(objUsuario.login, MAXNOM, stdin);
 	objUsuario.login[strcspn(objUsuario.login, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.login) == MAXNOM-1 && objUsuario.login[MAXNOM-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
 	
 	printf("Ingrese contraseña: ");
 	fgets(objUsuario.contrasenia, MAXNOM, stdin);
 	objUsuario.contrasenia[strcspn(objUsuario.contrasenia, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.contrasenia) == MAXNOM-1 && objUsuario.contrasenia[MAXNOM-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
+
 	
 	// Asignar tipo de usuario
 	objUsuario.tipo = ADMIN;
@@ -134,7 +152,6 @@ void abrirOCerrarSubasta(nodo_subasta *result_8,char *consultarproductoandvalora
 				{
                     printf("La subasta ha sido cerrada. El comprador es: \n");
 					// Imprimir los datos del cliente
-					printf("\nDatos del administrador ingresado:\n");
 					printf("Nombres: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.nombres);
 					printf("Apellidos: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.apellidos);
 					printf("Correo electrónico: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.correo);
@@ -154,12 +171,7 @@ void abrirOCerrarSubasta(nodo_subasta *result_8,char *consultarproductoandvalora
     }
 
 }
-void ConsultarProductoCodigo(){
 
-}
-void consultarProductoActual(){
-
-}
 void
 gestion_usuarios_1(char *host)
 {
@@ -199,14 +211,7 @@ gestion_usuarios_1(char *host)
 		exit (1);
 	}
 #endif	/* DEBUG */
-	/*result_1 = registrarusuario_1(&registrarusuario_1_arg, clnt1);
-	if (result_1 == (bool_t *) NULL) {
-		clnt_perror(clnt1, "call failed");
-	}
-	result_2 = iniciarsesion_1(&iniciarsesion_1_arg, clnt1);
-	if (result_2 == (respuesta_login *) NULL) {
-		clnt_perror(clnt1, "call failed");
-	}*/
+	
 	
 	//invocacion de los procedimientos remotos
 	do
@@ -223,17 +228,21 @@ gestion_usuarios_1(char *host)
 				clnt_perror(clnt1, "call failed");
 			} else if (*result_1 == TRUE) {
 				printf("\n Usuario registrado exitosamente.");
+			}else
+			{
+				printf("\n Usuario NO fue registrado. capacidad maxima alcanzada");
 			}
+			
 
 			break;
 		case 2:
 			do
 			{
 				printf("\nIngrese el login: ");
-				scanf("%s", iniciarsesion_1_arg.login);
+				scanf("%19s", iniciarsesion_1_arg.login);
 				fflush(stdin);
 				printf("Ingrese la constrasenia: ");
-				scanf("%s", iniciarsesion_1_arg.contrasenia);
+				scanf("%19s", iniciarsesion_1_arg.contrasenia);
 				fflush(stdin);
 				result_2 = iniciarsesion_1(&iniciarsesion_1_arg, clnt1);
 				fflush(stdin);
@@ -313,10 +322,17 @@ gestion_usuarios_1(char *host)
 							}
 							else
 							{
-								printf("\nCodigo: %d", result_7->codigoProducto);
-								printf("\nNombre: %s", result_7->nombre);									
-								printf("\nActualmente esta disponible para subastar: %s", result_7->estadoProd == SI ? "SI" : "NO");						
-								printf("\nPrecio base: %.2f\n", result_7->valor);
+								if (result_7->codigoProducto==-1)
+								{
+									printf("No hay un producto registrado con codigo: %d \n",consultarproducto_2_arg);
+								}
+								else
+								{
+									printf("\nCodigo: %d", result_7->codigoProducto);
+									printf("\nNombre: %s", result_7->nombre);									
+									printf("\nActualmente esta disponible para subastar: %s", result_7->estadoProd == SI ? "SI" : "NO");						
+									printf("\nPrecio base: %.2f\n", result_7->valor);	
+								}								
 							}			
 							break;
 						case 5:
@@ -338,7 +354,7 @@ gestion_usuarios_1(char *host)
 									
 							break;
 						case 6:
-							printf("\nSaliendo del programa.\n");				
+							printf("\nSaliendo del submenu.\n");				
 							break;
 						default:
 							break;
@@ -362,24 +378,6 @@ gestion_usuarios_1(char *host)
 	 
 	
 	
-	result_4 = listarproductosdisponiblessubastar_2((void*)&listarproductosdisponiblessubastar_2_arg, clnt2);
-	if (result_4 == (vector_productos *) NULL) {
-		clnt_perror(clnt2, "call failed");
-	}
-	
-	result_6 = listarproductostodos_2((void*)&listarproductostodos_2_arg, clnt2);
-	if (result_6 == (vector_productos *) NULL) {
-		clnt_perror(clnt2, "call failed");
-	}
-	
-	result_8 = consultarproductoandvaloractualsubasta_2((void*)&consultarproductoandvaloractualsubasta_2_arg, clnt2);
-	if (result_8 == (nodo_subasta *) NULL) {
-		clnt_perror(clnt2, "call failed");
-	}
-	result_9 = ofertarproductosubasta_2(&ofertarproductosubasta_2_arg, clnt2);
-	if (result_9 == (bool_t *) NULL) {
-		clnt_perror(clnt2, "call failed");
-	}
 #ifndef	DEBUG
 	clnt_destroy (clnt1);
 	clnt_destroy (clnt2);

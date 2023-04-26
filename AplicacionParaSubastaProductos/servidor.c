@@ -138,6 +138,8 @@ nodo_producto *
 consultarproducto_2_svc(int *argp, struct svc_req *rqstp)
 {
 	static nodo_producto result;
+	//TODO
+	result.codigoProducto = -1; // Valor sentinela para indicar que no existe
 	printf("Invocando a consultar producto\n");
 	// Buscar el producto correspondiente y retornarlo
 	for (int i = 0; i < posicionProductoAregistrar; i++) {
@@ -188,7 +190,7 @@ ofertarproductosubasta_2_svc(oferta *argp, struct svc_req *rqstp)
 		{
 			// Actualizar la oferta actual de la subasta
 			subasta_actual.oferta_actual.valor = argp->valor;
-      subasta_actual.oferta_actual.objUsuario_comprador_actual = argp->objUsuario_comprador_actual;
+      		subasta_actual.oferta_actual.objUsuario_comprador_actual = argp->objUsuario_comprador_actual;
 			result = TRUE;
 		}
 	}	

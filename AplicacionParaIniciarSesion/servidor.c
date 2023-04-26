@@ -16,9 +16,10 @@ int posUsuarioARegistrar=3;
 bool_t *
 registrarusuario_1_svc(datos_completos *argp, struct svc_req *rqstp)
 {
+	printf("\n invocando a resgistrar usuario");
 	static bool_t  result;
 	if (posUsuarioARegistrar >= 5) {
-        printf("\n Error: no se pueden registrar más usuarios.");
+        printf("\n Error: no se pueden registrar más usuarios. actualmente hay %d registrados",posUsuarioARegistrar);
         result = FALSE;
     }else{
 		// verificar si el login ya está registrado
@@ -32,6 +33,7 @@ registrarusuario_1_svc(datos_completos *argp, struct svc_req *rqstp)
 
 		// si no se encontró un login igual, registrar al usuario
 		if(posUsuarioARegistrar < 5){
+			printf("\nUsuario registrado en la pos #%d ",posUsuarioARegistrar);
 			vectorUsuarios[posUsuarioARegistrar] = *argp;
 			posUsuarioARegistrar++;
 			result = TRUE;
@@ -67,6 +69,7 @@ iniciarsesion_1_svc(datos_login *argp, struct svc_req *rqstp)
 				{
 					result.codigo = 1; // valor para cliente
 					strcpy(result.mensaje, "ES CLIENTE");
+					memcpy(&result.objUsuario, &vectorUsuarios[i], sizeof(datos_completos));
 					break;
 				}
 			}		

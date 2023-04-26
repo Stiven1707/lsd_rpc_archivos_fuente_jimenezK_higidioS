@@ -29,6 +29,7 @@ struct datos_login {
 struct respuesta_login {
     char mensaje[MAXNOM];
     int codigo;
+    datos_completos objUsuario;
 };
 
 /* Definición de las operaciones que se pueden realizar */
