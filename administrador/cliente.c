@@ -90,7 +90,68 @@ void registrarProducto(){
 void listarProductosOfertar(){
     
 }
-void abrirOCerrarSubasta(){
+void abrirOCerrarSubasta(nodo_subasta *result_8,char *consultarproductoandvaloractualsubasta_2_arg, bool_t *result_5,int abrircerrarsubasta_2_arg, CLIENT *clnt2){
+	
+	int opcionAbrirCerrar;
+	result_8 = consultarproductoandvaloractualsubasta_2((void*)&consultarproductoandvaloractualsubasta_2_arg, clnt2);
+	if (result_8 == (nodo_subasta *) NULL) {
+		clnt_perror(clnt2, "call failed");
+	}					
+    
+    if (result_8->estado == NUEVA || result_8->estado == CERRADA || result_8->prod.codigoProducto==-1) { // Si no hay una subasta actual
+        printf("No hay una subasta abierta actualmente.\n");
+        printf("Ingrese el codigo del producto a subastar: ");
+        scanf("%d", &abrircerrarsubasta_2_arg);
+        result_5 = abrircerrarsubasta_2(&abrircerrarsubasta_2_arg, clnt2);// Crear una nueva subasta con el producto especificado
+		if (result_5 == (bool_t *) NULL) {
+			clnt_perror(clnt2, "call failed");
+		}
+		if (*result_5==TRUE)
+		{
+        	printf("La subasta ha sido abierta exitosamente.\n");
+		}else{
+			printf("ERROR: La subasta no se pudo crear, el producto puede no estar disponible para subastar.\n");
+		}
+		 
+    } else { // Si ya hay una subasta abierta
+		abrircerrarsubasta_2_arg = result_8->prod.codigoProducto;	
+        printf("La subasta actual es del producto con codigo %d.\n", abrircerrarsubasta_2_arg);
+        printf("1. Cerrar subasta.\n");
+        printf("2. Cancelar.\n");
+        printf("Ingrese una opcion: ");
+        scanf("%d", &opcionAbrirCerrar);
+        switch (opcionAbrirCerrar) {
+            case 1: // Cerrar subasta
+                result_5 = abrircerrarsubasta_2(&abrircerrarsubasta_2_arg, clnt2);
+				if (result_5 == (bool_t *) NULL) {
+					clnt_perror(clnt2, "call failed");
+				}
+                if (result_8->oferta_actual.objUsuario_comprador_actual.tipo == ADMIN) {
+                    printf("La subasta ha sido cerrada sin comprador.\n");
+					break;
+                }
+				if (*result_5==TRUE)
+				{
+                    printf("La subasta ha sido cerrada. El comprador es: \n");
+					// Imprimir los datos del cliente
+					printf("\nDatos del administrador ingresado:\n");
+					printf("Nombres: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.nombres);
+					printf("Apellidos: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.apellidos);
+					printf("Correo electrónico: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.correo);
+					printf("Teléfono: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.telefono);								
+					printf("Tipo de usuario: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.tipo == ADMIN ? "ADMIN" : "CLIENTE");
+				}else{
+					printf("ERROR: La subasta no se pudo cerrar\n");
+				}
+                break;
+            case 2: // Cancelar
+                printf("Operacion cancelada.\n");
+                break;
+            default:
+                printf("Opcion invalida.\n");
+                break;
+        }
+    }
 
 }
 void ConsultarProductoCodigo(){
@@ -239,15 +300,8 @@ gestion_usuarios_1(char *host)
 							}
 							break;
 						case 3:
-							result_8 = consultarproductoandvaloractualsubasta_2((void*)&consultarproductoandvaloractualsubasta_2_arg, clnt2);
-							if (result_8 == (nodo_subasta *) NULL) {
-								clnt_perror(clnt2, "call failed");
-							}
-							//TODO			
-							result_5 = abrircerrarsubasta_2(&abrircerrarsubasta_2_arg, clnt2);
-							if (result_5 == (bool_t *) NULL) {
-								clnt_perror(clnt2, "call failed");
-							}
+							abrirOCerrarSubasta(result_8,consultarproductoandvaloractualsubasta_2_arg,result_5,abrircerrarsubasta_2_arg,clnt2);
+							
 							break;
 						case 4:
 							printf("Digite el codigo: ");
@@ -266,7 +320,22 @@ gestion_usuarios_1(char *host)
 							}			
 							break;
 						case 5:
-										
+							result_8 = consultarproductoandvaloractualsubasta_2((void*)&consultarproductoandvaloractualsubasta_2_arg, clnt2);
+							if (result_8 == (nodo_subasta *) NULL) {
+								clnt_perror(clnt2, "call failed");
+							}else
+							{
+								if (result_8->estado == NUEVA || result_8->estado == CERRADA || result_8->prod.codigoProducto==-1) { // Si no hay una subasta actual
+        							printf("No hay una subasta abierta actualmente.\n");
+								}else
+								{
+									printf("\nCodigo: %d", result_8->prod.codigoProducto);
+									printf("\nNombre: %s", result_8->prod.nombre);						
+									printf("\nPrecio actual: %.2f\n", result_8->oferta_actual.valor);
+								}
+								
+							}
+									
 							break;
 						case 6:
 							printf("\nSaliendo del programa.\n");				
