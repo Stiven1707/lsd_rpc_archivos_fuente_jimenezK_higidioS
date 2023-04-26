@@ -6,14 +6,40 @@
 
 #include "interface1.h"
 
+// crear el arreglo de estructuras e inicializarlo con valores predeterminados
+datos_completos vectorUsuarios[5] = {
+	{"Juan", "Pérez", "juan.perez@gmail.com", "555-1234", "juanperez", "password1", CLIENTE},
+	{"María", "González", "maria.gonzalez@gmail.com", "555-5678", "mariagonzalez", "password2", CLIENTE},
+	{"Administrador", "Sistema", "admin@sistema.com", "555-9012", "admin", "password3", ADMIN}
+};
+int posUsuarioARegistrar=0;
 bool_t *
 registrarusuario_1_svc(datos_completos *argp, struct svc_req *rqstp)
 {
 	static bool_t  result;
+	if (posUsuarioARegistrar >= 5) {
+        printf("\n Error: no se pueden registrar más usuarios.");
+        result = FALSE;
+    }else{
+		// verificar si el login ya está registrado
+		for (int i = 0; i < posUsuarioARegistrar; i++) {
+			if (strcmp(vectorUsuarios[i].login, argp->login) == 0) {
+				// el login ya está registrado, devolver FALSE
+				result = FALSE;
+				return &result;
+			}
+		}
 
-	/*
-	 * insert server code here
-	 */
+		// si no se encontró un login igual, registrar al usuario
+		if(posUsuarioARegistrar < 5){
+			vectorUsuarios[posUsuarioARegistrar] = *argp;
+			posUsuarioARegistrar++;
+			result = TRUE;
+		}else{
+			result = FALSE;
+		}
+	}
+
 
 	return &result;
 }
@@ -22,10 +48,42 @@ respuesta_login *
 iniciarsesion_1_svc(datos_login *argp, struct svc_req *rqstp)
 {
 	static respuesta_login  result;
-
-	/*
-	 * insert server code here
-	 */
-
+	int bandera = 0;
+	printf("\n invocando a iniciar sesión");
+	printf("\n login %s", argp->login); 
+	printf("\n contrasenia %s", argp->contrasenia); 
+	
+	for(int i=0;i<5;i++){
+		if(strcmp(vectorUsuarios[i].login  ,argp->login)==0){
+			bandera = 1;
+			if(strcmp(vectorUsuarios[i].contrasenia ,argp->contrasenia)==0){
+				if (vectorUsuarios[i].tipo == ADMIN)
+				{
+					result.codigo = 0; // valor para admin
+					strcpy(result.mensaje, "ES ADMIN");
+					break;
+				}
+				else if (vectorUsuarios[i].tipo == CLIENTE)
+				{
+					result.codigo = 1; // valor para cliente
+					strcpy(result.mensaje, "ES CLIENTE");
+					break;
+				}
+			}		
+			else{
+				result.codigo = 2; // contraseña incorrecta
+				strcpy(result.mensaje, "CONTRA INCORRECTA.");
+				break;
+			}
+		}
+	}
+	if (bandera==0)
+	{
+		//no está registrado
+		result.codigo = 3;					
+		strcpy(result.mensaje, "NO ESTÁ REGISTRADO");
+	}
+	
+	printf("\n%s  %d \n",result.mensaje ,result.codigo);
 	return &result;
 }

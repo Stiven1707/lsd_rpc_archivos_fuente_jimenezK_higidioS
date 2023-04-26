@@ -18,3 +18,4 @@ cliente/interface1_clnt.o
 cliente/interface1_xdr.o
 cliente/interface2_clnt.o
 cliente/interface2_xdr.o
+AplicacionParaIniciarSesion/ejecutableServidorLogin
