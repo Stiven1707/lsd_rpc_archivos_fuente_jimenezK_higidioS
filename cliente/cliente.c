@@ -13,16 +13,6 @@ void menuGestionUsuarios()
 	printf("\n 2. Iniciar sesion.");
 	printf("\n 3. Salir.");
 }
-void menuSubastaAdmin()
-{
-	printf("\n====== menu admin======");
-	printf("\n 1. Registrar producto");
-	printf("\n 2. Listar productos a ofertar.");
-	printf("\n 3. Abrir o Cerrar subasta.");
-	printf("\n 4. Consultar producto por codigo.");
-	printf("\n 5. Consultar producto acual subastadose.");
-	printf("\n 6. Salir.");
-}
 
 void menuSubastaCliente()
 {
@@ -91,7 +81,56 @@ gestion_usuarios_1(char *host)
 		switch (opcion)
 		{
 		case 1:
-			//TODO
+			// Limpiar búfer de entrada
+			fgets(registrarusuario_1_arg.nombres, MAXNOM, stdin);
+			// Ingresar datos del cliente
+			printf("\nIngrese nombres: ");
+			fgets(registrarusuario_1_arg.nombres, MAXNOM, stdin);
+			registrarusuario_1_arg.nombres[strcspn(registrarusuario_1_arg.nombres, "\n")] = '\0';
+			fflush(stdin);
+
+			printf("\nIngrese apellidos: ");
+			fgets(registrarusuario_1_arg.apellidos, MAXNOM, stdin);
+			registrarusuario_1_arg.apellidos[strcspn(registrarusuario_1_arg.apellidos, "\n")] = '\0';
+			fflush(stdin);
+			
+			printf("Ingrese correo electrónico: ");
+			fgets(registrarusuario_1_arg.correo, MAXCORREO, stdin);
+			registrarusuario_1_arg.correo[strcspn(registrarusuario_1_arg.correo, "\n")] = '\0';
+			fflush(stdin);
+			
+			printf("Ingrese teléfono: ");
+			fgets(registrarusuario_1_arg.telefono, MAXTEL, stdin);
+			registrarusuario_1_arg.telefono[strcspn(registrarusuario_1_arg.telefono, "\n")] = '\0';
+			fflush(stdin);
+			
+			printf("Ingrese nombre de usuario: ");
+			fgets(registrarusuario_1_arg.login, MAXNOM, stdin);
+			registrarusuario_1_arg.login[strcspn(registrarusuario_1_arg.login, "\n")] = '\0';
+			fflush(stdin);
+			
+			printf("Ingrese contraseña: ");
+			fgets(registrarusuario_1_arg.contrasenia, MAXNOM, stdin);
+			registrarusuario_1_arg.contrasenia[strcspn(registrarusuario_1_arg.contrasenia, "\n")] = '\0';
+			fflush(stdin);
+			
+			// Asignar tipo de usuario
+			registrarusuario_1_arg.tipo = CLIENTE;
+			// Imprimir los datos del administrador ingresado
+			printf("\nDatos del cliente ingresado:\n");
+			printf("Nombres: %s\n", registrarusuario_1_arg.nombres);
+			printf("Apellidos: %s\n", registrarusuario_1_arg.apellidos);
+			printf("Correo electrónico: %s\n", registrarusuario_1_arg.correo);
+			printf("Teléfono: %s\n", registrarusuario_1_arg.telefono);
+			printf("Nombre de usuario: %s\n", registrarusuario_1_arg.login);
+			printf("Contraseña: %s\n", registrarusuario_1_arg.contrasenia);
+			printf("Tipo de usuario: %d\n", registrarusuario_1_arg.tipo);
+			result_1 = registrarusuario_1(&registrarusuario_1_arg, clnt1);
+			if (result_1 == (bool_t *) NULL) {
+				clnt_perror(clnt1, "call failed");
+			} else if (*result_1 == TRUE) {
+				printf("\n Usuario registrado exitosamente.");
+			}
 			break;
 		case 2:
 			while (result_2->codigo != 1) {
@@ -119,22 +158,11 @@ gestion_usuarios_1(char *host)
 						switch (opcion)
 						{
 						case 1:
-							printf("Digite el codigo: "); 
-							scanf("%d", &registrar_producto_2_arg.codigoProducto);
-
-							printf("Digite el nombre: "); 
-							scanf("%s", registrar_producto_2_arg.nombre);
-
-							printf("Digite el valor: "); 
-							scanf("%f",&registrar_producto_2_arg.valor); 
-							result_3 = registrar_producto_2(&registrar_producto_2_arg, clnt2); 
-							if (result_3 == (bool_t *) NULL) { 
-								clnt_perror (clnt2, "call failed");
-							} 
-							else if(*result_3==TRUE)
-							{
-								printf("\n Producto registrado exitosamente");
-							}	
+							result_4= listarproductosdisponiblessubastar_2(&listarproductosdisponiblessubastar_2_arg,clnt2);
+							printf("\nProductos disponibles para subasta:\n");
+							for (int i = 0; i < MAX_CAN_PROD; i++) {
+								printf("Codigo: %d\n", result_4->vector_productos[i].codigoProducto);
+                    		}
 							break;
 						case 2:
 							printf("Digite el id: ");
@@ -152,12 +180,17 @@ gestion_usuarios_1(char *host)
 							}
 							break;
 						case 3:
+							break;
+						case 4:
+							break;	
+						
+						case 5:
 							printf("\nSaliendo del programa.");				
 							break;
 						default:
 							break;
 						}
-					} while (opcion != 3);
+					} while (opcion != 5);
 					
 				}
 	
