@@ -33,6 +33,60 @@ void menuSubastaCliente()
 	printf("\n 4. Ofertar al producto actual subastandose.");
 	printf("\n 5. Salir.");
 }
+
+datos_completos registrarAdmin(){
+	datos_completos  objUsuario;
+	// Limpiar búfer de entrada
+	fgets(objUsuario.nombres, MAXNOM, stdin);
+	// Ingresar datos del administrador
+	printf("\nIngrese nombres: ");
+	fgets(objUsuario.nombres, MAXNOM, stdin);
+	objUsuario.nombres[strcspn(objUsuario.nombres, "\n")] = '\0';
+	fflush(stdin);
+
+	printf("\nIngrese apellidos: ");
+	fgets(objUsuario.apellidos, MAXNOM, stdin);
+	objUsuario.apellidos[strcspn(objUsuario.apellidos, "\n")] = '\0';
+	fflush(stdin);
+	
+	printf("Ingrese correo electrónico: ");
+	fgets(objUsuario.correo, MAXCORREO, stdin);
+	objUsuario.correo[strcspn(objUsuario.correo, "\n")] = '\0';
+	fflush(stdin);
+	
+	printf("Ingrese teléfono: ");
+	fgets(objUsuario.telefono, MAXTEL, stdin);
+	objUsuario.telefono[strcspn(objUsuario.telefono, "\n")] = '\0';
+	fflush(stdin);
+	
+	printf("Ingrese nombre de usuario: ");
+	fgets(objUsuario.login, MAXNOM, stdin);
+	objUsuario.login[strcspn(objUsuario.login, "\n")] = '\0';
+	fflush(stdin);
+	
+	printf("Ingrese contraseña: ");
+	fgets(objUsuario.contrasenia, MAXNOM, stdin);
+	objUsuario.contrasenia[strcspn(objUsuario.contrasenia, "\n")] = '\0';
+	fflush(stdin);
+	
+	// Asignar tipo de usuario
+	objUsuario.tipo = ADMIN;
+	// Imprimir los datos del administrador ingresado
+	printf("\nDatos del administrador ingresado:\n");
+	printf("Nombres: %s\n", objUsuario.nombres);
+	printf("Apellidos: %s\n", objUsuario.apellidos);
+	printf("Correo electrónico: %s\n", objUsuario.correo);
+	printf("Teléfono: %s\n", objUsuario.telefono);
+	printf("Nombre de usuario: %s\n", objUsuario.login);
+	printf("Contraseña: %s\n", objUsuario.contrasenia);
+	printf("Tipo de usuario: %d\n", objUsuario.tipo);
+	
+	return objUsuario;
+}
+
+void iniciarSesionAdmin(){
+
+}
 void
 gestion_usuarios_1(char *host)
 {
@@ -88,52 +142,9 @@ gestion_usuarios_1(char *host)
 		printf("\n Digite una opcion: ");
 		scanf("%d", &opcion);
 		switch (opcion)
-		{
+		{ 
 		case 1:
-			// Limpiar búfer de entrada
-			fgets(registrarusuario_1_arg.nombres, MAXNOM, stdin);
-			// Ingresar datos del administrador
-			printf("\nIngrese nombres: ");
-			fgets(registrarusuario_1_arg.nombres, MAXNOM, stdin);
-			registrarusuario_1_arg.nombres[strcspn(registrarusuario_1_arg.nombres, "\n")] = '\0';
-			fflush(stdin);
-
-			printf("\nIngrese apellidos: ");
-			fgets(registrarusuario_1_arg.apellidos, MAXNOM, stdin);
-			registrarusuario_1_arg.apellidos[strcspn(registrarusuario_1_arg.apellidos, "\n")] = '\0';
-			fflush(stdin);
-			
-			printf("Ingrese correo electrónico: ");
-			fgets(registrarusuario_1_arg.correo, MAXCORREO, stdin);
-			registrarusuario_1_arg.correo[strcspn(registrarusuario_1_arg.correo, "\n")] = '\0';
-			fflush(stdin);
-			
-			printf("Ingrese teléfono: ");
-			fgets(registrarusuario_1_arg.telefono, MAXTEL, stdin);
-			registrarusuario_1_arg.telefono[strcspn(registrarusuario_1_arg.telefono, "\n")] = '\0';
-			fflush(stdin);
-			
-			printf("Ingrese nombre de usuario: ");
-			fgets(registrarusuario_1_arg.login, MAXNOM, stdin);
-			registrarusuario_1_arg.login[strcspn(registrarusuario_1_arg.login, "\n")] = '\0';
-			fflush(stdin);
-			
-			printf("Ingrese contraseña: ");
-			fgets(registrarusuario_1_arg.contrasenia, MAXNOM, stdin);
-			registrarusuario_1_arg.contrasenia[strcspn(registrarusuario_1_arg.contrasenia, "\n")] = '\0';
-			fflush(stdin);
-			
-			// Asignar tipo de usuario
-			registrarusuario_1_arg.tipo = ADMIN;
-			// Imprimir los datos del administrador ingresado
-			printf("\nDatos del administrador ingresado:\n");
-			printf("Nombres: %s\n", registrarusuario_1_arg.nombres);
-			printf("Apellidos: %s\n", registrarusuario_1_arg.apellidos);
-			printf("Correo electrónico: %s\n", registrarusuario_1_arg.correo);
-			printf("Teléfono: %s\n", registrarusuario_1_arg.telefono);
-			printf("Nombre de usuario: %s\n", registrarusuario_1_arg.login);
-			printf("Contraseña: %s\n", registrarusuario_1_arg.contrasenia);
-			printf("Tipo de usuario: %d\n", registrarusuario_1_arg.tipo);
+			registrarusuario_1_arg=registrarAdmin();
 			result_1 = registrarusuario_1(&registrarusuario_1_arg, clnt1);
 			if (result_1 == (bool_t *) NULL) {
 				clnt_perror(clnt1, "call failed");
