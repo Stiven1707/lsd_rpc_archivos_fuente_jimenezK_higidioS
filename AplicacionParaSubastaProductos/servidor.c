@@ -50,13 +50,6 @@ listarproductosdisponiblessubastar_2_svc(void *argp, struct svc_req *rqstp)
 
 	int posicionResultado = 0;
     for (int i = 0; i < posicionProductoAregistrar; i++) {
-		printf("\n************************************");
-		printf("\n %d",vectorProductos[i].codigoProducto);
-		printf("\n %s",vectorProductos[i].nombre);
-		printf("\n %d",vectorProductos[i].estadoProd);
-		printf("\n %f",vectorProductos[i].valor);
-		printf("\n************************************");
-
         if (vectorProductos[i].estadoProd == SI) {
             result.vector_productos[posicionResultado] = vectorProductos[i];
             posicionResultado++;
@@ -195,7 +188,7 @@ ofertarproductosubasta_2_svc(oferta *argp, struct svc_req *rqstp)
 		{
 			// Actualizar la oferta actual de la subasta
 			subasta_actual.oferta_actual.valor = argp->valor;
-            subasta_actual.oferta_actual.objUsuario_comprador_actual = argp->objUsuario_comprador_actual;
+      subasta_actual.oferta_actual.objUsuario_comprador_actual = argp->objUsuario_comprador_actual;
 			result = TRUE;
 		}
 	}	
