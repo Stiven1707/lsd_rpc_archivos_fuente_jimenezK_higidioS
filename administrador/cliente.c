@@ -20,7 +20,7 @@ void menuSubastaAdmin()
 	printf("\n 2. Listar productos a ofertar.");
 	printf("\n 3. Abrir o Cerrar subasta.");
 	printf("\n 4. Consultar producto por codigo.");
-	printf("\n 5. Consultar producto acual subastadose.");
+	printf("\n 5. Consultar producto actual subastadose.");
 	printf("\n 6. Salir.");
 }
 
@@ -29,7 +29,7 @@ void menuSubastaCliente()
 	printf("\n====== menu cliente======");
 	printf("\n 1. Listar todos los productos.");
 	printf("\n 2. Consultar producto por codigo.");
-	printf("\n 3. Consultar producto acual subastadose.");
+	printf("\n 3. Consultar producto actual subastadose.");
 	printf("\n 4. Ofertar al producto actual subastandose.");
 	printf("\n 5. Salir.");
 }
@@ -44,7 +44,7 @@ datos_completos registrarAdmin(){
 	objUsuario.nombres[strcspn(objUsuario.nombres, "\n")] = '\0';
 	fflush(stdin);
 
-	printf("\nIngrese apellidos: ");
+	printf("Ingrese apellidos: ");
 	fgets(objUsuario.apellidos, MAXNOM, stdin);
 	objUsuario.apellidos[strcspn(objUsuario.apellidos, "\n")] = '\0';
 	fflush(stdin);
@@ -223,7 +223,11 @@ gestion_usuarios_1(char *host)
 				clnt_perror(clnt1, "call failed");
 			} else if (*result_1 == TRUE) {
 				printf("\n Usuario registrado exitosamente.");
+			}else
+			{
+				printf("\n Usuario NO fue registrado. capacidad maxima alcanzada");
 			}
+			
 
 			break;
 		case 2:
@@ -313,10 +317,17 @@ gestion_usuarios_1(char *host)
 							}
 							else
 							{
-								printf("\nCodigo: %d", result_7->codigoProducto);
-								printf("\nNombre: %s", result_7->nombre);									
-								printf("\nActualmente esta disponible para subastar: %s", result_7->estadoProd == SI ? "SI" : "NO");						
-								printf("\nPrecio base: %.2f\n", result_7->valor);
+								if (result_7->codigoProducto==-1)
+								{
+									printf("No hay un producto registrado con codigo: %d \n",consultarproducto_2_arg);
+								}
+								else
+								{
+									printf("\nCodigo: %d", result_7->codigoProducto);
+									printf("\nNombre: %s", result_7->nombre);									
+									printf("\nActualmente esta disponible para subastar: %s", result_7->estadoProd == SI ? "SI" : "NO");						
+									printf("\nPrecio base: %.2f\n", result_7->valor);	
+								}								
 							}			
 							break;
 						case 5:
@@ -362,24 +373,6 @@ gestion_usuarios_1(char *host)
 	 
 	
 	
-	result_4 = listarproductosdisponiblessubastar_2((void*)&listarproductosdisponiblessubastar_2_arg, clnt2);
-	if (result_4 == (vector_productos *) NULL) {
-		clnt_perror(clnt2, "call failed");
-	}
-	
-	result_6 = listarproductostodos_2((void*)&listarproductostodos_2_arg, clnt2);
-	if (result_6 == (vector_productos *) NULL) {
-		clnt_perror(clnt2, "call failed");
-	}
-	
-	result_8 = consultarproductoandvaloractualsubasta_2((void*)&consultarproductoandvaloractualsubasta_2_arg, clnt2);
-	if (result_8 == (nodo_subasta *) NULL) {
-		clnt_perror(clnt2, "call failed");
-	}
-	result_9 = ofertarproductosubasta_2(&ofertarproductosubasta_2_arg, clnt2);
-	if (result_9 == (bool_t *) NULL) {
-		clnt_perror(clnt2, "call failed");
-	}
 #ifndef	DEBUG
 	clnt_destroy (clnt1);
 	clnt_destroy (clnt2);

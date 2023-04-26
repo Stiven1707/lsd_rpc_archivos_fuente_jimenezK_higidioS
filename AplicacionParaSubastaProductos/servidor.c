@@ -138,6 +138,8 @@ nodo_producto *
 consultarproducto_2_svc(int *argp, struct svc_req *rqstp)
 {
 	static nodo_producto result;
+	//TODO
+	result.codigoProducto = -1; // Valor sentinela para indicar que no existe
 	printf("Invocando a consultar producto\n");
 	// Buscar el producto correspondiente y retornarlo
 	for (int i = 0; i < posicionProductoAregistrar; i++) {
