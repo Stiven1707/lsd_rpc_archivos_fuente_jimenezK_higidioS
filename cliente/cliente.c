@@ -47,6 +47,8 @@ gestion_usuarios_1(char *host)
 	bool_t  *result_9;
 	oferta  ofertarproductosubasta_2_arg;
 	int opcion;
+	int opcionInicio;
+
 
 
 #ifndef	DEBUG
@@ -74,38 +76,57 @@ gestion_usuarios_1(char *host)
 		switch (opcion)
 		{
 		case 1:
-			// Limpiar búfer de entrada
-			fgets(registrarusuario_1_arg.nombres, MAXNOM, stdin);
+			while(getchar() != '\n');
 			// Ingresar datos del cliente
 			printf("\nIngrese nombres: ");
 			fgets(registrarusuario_1_arg.nombres, MAXNOM, stdin);
 			registrarusuario_1_arg.nombres[strcspn(registrarusuario_1_arg.nombres, "\n")] = '\0';
-			fflush(stdin);
+			if (strlen(registrarusuario_1_arg.nombres) == MAXNOM-1 && registrarusuario_1_arg.nombres[MAXNOM-2] != '\n') {
+				int c;
+				while ((c = getchar()) != '\n' && c != EOF);
+			}
 
 			printf("Ingrese apellidos: ");
 			fgets(registrarusuario_1_arg.apellidos, MAXNOM, stdin);
 			registrarusuario_1_arg.apellidos[strcspn(registrarusuario_1_arg.apellidos, "\n")] = '\0';
-			fflush(stdin);
-			
+			if (strlen(registrarusuario_1_arg.apellidos) == MAXNOM-1 && registrarusuario_1_arg.apellidos[MAXNOM-2] != '\n') {
+				int c;
+				while ((c = getchar()) != '\n' && c != EOF);
+			}
+
 			printf("Ingrese correo electrónico: ");
 			fgets(registrarusuario_1_arg.correo, MAXCORREO, stdin);
 			registrarusuario_1_arg.correo[strcspn(registrarusuario_1_arg.correo, "\n")] = '\0';
-			fflush(stdin);
-			
+			if (strlen(registrarusuario_1_arg.correo) == MAXCORREO-1 && registrarusuario_1_arg.correo[MAXCORREO-2] != '\n') {
+				int c;
+				while ((c = getchar()) != '\n' && c != EOF);
+			}
+
 			printf("Ingrese teléfono: ");
 			fgets(registrarusuario_1_arg.telefono, MAXTEL, stdin);
 			registrarusuario_1_arg.telefono[strcspn(registrarusuario_1_arg.telefono, "\n")] = '\0';
-			fflush(stdin);
-			
+			if (strlen(registrarusuario_1_arg.telefono) == MAXTEL-1 && registrarusuario_1_arg.telefono[MAXTEL-2] != '\n') {
+				int c;
+				while ((c = getchar()) != '\n' && c != EOF);
+			}
+
 			printf("Ingrese nombre de usuario: ");
 			fgets(registrarusuario_1_arg.login, MAXNOM, stdin);
 			registrarusuario_1_arg.login[strcspn(registrarusuario_1_arg.login, "\n")] = '\0';
-			fflush(stdin);
-			
+			if (strlen(registrarusuario_1_arg.login) == MAXNOM-1 && registrarusuario_1_arg.login[MAXNOM-2] != '\n') {
+				int c;
+				while ((c = getchar()) != '\n' && c != EOF);
+			}
+
 			printf("Ingrese contraseña: ");
 			fgets(registrarusuario_1_arg.contrasenia, MAXNOM, stdin);
 			registrarusuario_1_arg.contrasenia[strcspn(registrarusuario_1_arg.contrasenia, "\n")] = '\0';
-			fflush(stdin);
+			if (strlen(registrarusuario_1_arg.contrasenia) == MAXNOM-1 && registrarusuario_1_arg.contrasenia[MAXNOM-2] != '\n') {
+				int c;
+				while ((c = getchar()) != '\n' && c != EOF);
+			}
+
+
 			
 			// Asignar tipo de usuario
 			registrarusuario_1_arg.tipo = CLIENTE;
@@ -129,12 +150,13 @@ gestion_usuarios_1(char *host)
 			}
 			break;
 		case 2:
-			while (result_2->codigo != 1) {
+			do 
+			{
 				printf("\nIngrese el login: ");
-				scanf("%s", iniciarsesion_1_arg.login);
+				scanf("%19s", iniciarsesion_1_arg.login);
 				fflush(stdin);
 				printf("Ingrese la constrasenia: ");
-				scanf("%s", iniciarsesion_1_arg.contrasenia);
+				scanf("%19s", iniciarsesion_1_arg.contrasenia);
 				fflush(stdin);
 				result_2 = iniciarsesion_1(&iniciarsesion_1_arg, clnt1);
 				fflush(stdin);
@@ -150,8 +172,8 @@ gestion_usuarios_1(char *host)
 					{
 						menuSubastaCliente();
 						printf("\n Digite una opcion: ");
-						scanf("%d", &opcion);
-						switch (opcion)
+						scanf("%d", &opcionInicio);
+						switch (opcionInicio)
 						{
 						case 1:
 							// Llamar a la función remota para listar los todos  los productos
@@ -231,16 +253,6 @@ gestion_usuarios_1(char *host)
 								{
 									// Construir el datos_completos_comprador con la información del completa del usuario
 									memcpy(&ofertarproductosubasta_2_arg.objUsuario_comprador_actual, &result_2->objUsuario, sizeof(datos_completos_comprador));
-									// Copiar los datos
-									/*
-									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.nombres, result_2->objUsuario.nombres);
-									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.apellidos, result_2->objUsuario.apellidos);
-									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.correo, result_2->objUsuario.correo);
-									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.telefono, result_2->objUsuario.telefono);
-									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.login, result_2->objUsuario.login);
-									strcpy(ofertarproductosubasta_2_arg.objUsuario_comprador_actual.contrasenia, result_2->objUsuario.contrasenia);
-									ofertarproductosubasta_2_arg.objUsuario_comprador_actual.tipo = result_2->objUsuario.tipo;
-									*/
 									printf("\nDigite el valor que quiere subastar al producto: ");
 									scanf("%f", &ofertarproductosubasta_2_arg.valor);
 									result_9 = ofertarproductosubasta_2(&ofertarproductosubasta_2_arg, clnt2);
@@ -263,16 +275,16 @@ gestion_usuarios_1(char *host)
 							break;	
 						
 						case 5:
-							printf("\nSaliendo del programa.");				
+							printf("\nSaliendo del submenu.");				
 							break;
 						default:
 							break;
 						}
-					} while (opcion != 5);
+					} while (opcionInicio != 5);
 					
 				}
 	
-			}
+			}while (result_2->codigo != 1) ;
 			break;
 		
 		default:

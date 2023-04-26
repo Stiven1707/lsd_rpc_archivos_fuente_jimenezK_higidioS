@@ -36,38 +36,56 @@ void menuSubastaCliente()
 
 datos_completos registrarAdmin(){
 	datos_completos  objUsuario;
-	// Limpiar búfer de entrada
-	fgets(objUsuario.nombres, MAXNOM, stdin);
-	// Ingresar datos del administrador
+	// Ingresar datos del cliente
+	while(getchar() != '\n');
 	printf("\nIngrese nombres: ");
 	fgets(objUsuario.nombres, MAXNOM, stdin);
 	objUsuario.nombres[strcspn(objUsuario.nombres, "\n")] = '\0';
-	fflush(stdin);
-
+	if (strlen(objUsuario.nombres) == MAXNOM-1 && objUsuario.nombres[MAXNOM-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
+	
 	printf("Ingrese apellidos: ");
 	fgets(objUsuario.apellidos, MAXNOM, stdin);
 	objUsuario.apellidos[strcspn(objUsuario.apellidos, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.apellidos) == MAXNOM-1 && objUsuario.apellidos[MAXNOM-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
 	
 	printf("Ingrese correo electrónico: ");
 	fgets(objUsuario.correo, MAXCORREO, stdin);
 	objUsuario.correo[strcspn(objUsuario.correo, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.correo) == MAXCORREO-1 && objUsuario.correo[MAXCORREO-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
 	
 	printf("Ingrese teléfono: ");
 	fgets(objUsuario.telefono, MAXTEL, stdin);
 	objUsuario.telefono[strcspn(objUsuario.telefono, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.telefono) == MAXTEL-1 && objUsuario.telefono[MAXTEL-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
 	
 	printf("Ingrese nombre de usuario: ");
 	fgets(objUsuario.login, MAXNOM, stdin);
 	objUsuario.login[strcspn(objUsuario.login, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.login) == MAXNOM-1 && objUsuario.login[MAXNOM-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
 	
 	printf("Ingrese contraseña: ");
 	fgets(objUsuario.contrasenia, MAXNOM, stdin);
 	objUsuario.contrasenia[strcspn(objUsuario.contrasenia, "\n")] = '\0';
-	fflush(stdin);
+	if (strlen(objUsuario.contrasenia) == MAXNOM-1 && objUsuario.contrasenia[MAXNOM-2] != '\n') {
+		int c;
+		while ((c = getchar()) != '\n' && c != EOF);
+	}
+
 	
 	// Asignar tipo de usuario
 	objUsuario.tipo = ADMIN;
@@ -153,12 +171,7 @@ void abrirOCerrarSubasta(nodo_subasta *result_8,char *consultarproductoandvalora
     }
 
 }
-void ConsultarProductoCodigo(){
 
-}
-void consultarProductoActual(){
-
-}
 void
 gestion_usuarios_1(char *host)
 {
@@ -198,14 +211,7 @@ gestion_usuarios_1(char *host)
 		exit (1);
 	}
 #endif	/* DEBUG */
-	/*result_1 = registrarusuario_1(&registrarusuario_1_arg, clnt1);
-	if (result_1 == (bool_t *) NULL) {
-		clnt_perror(clnt1, "call failed");
-	}
-	result_2 = iniciarsesion_1(&iniciarsesion_1_arg, clnt1);
-	if (result_2 == (respuesta_login *) NULL) {
-		clnt_perror(clnt1, "call failed");
-	}*/
+	
 	
 	//invocacion de los procedimientos remotos
 	do
@@ -233,10 +239,10 @@ gestion_usuarios_1(char *host)
 			do
 			{
 				printf("\nIngrese el login: ");
-				scanf("%s", iniciarsesion_1_arg.login);
+				scanf("%19s", iniciarsesion_1_arg.login);
 				fflush(stdin);
 				printf("Ingrese la constrasenia: ");
-				scanf("%s", iniciarsesion_1_arg.contrasenia);
+				scanf("%19s", iniciarsesion_1_arg.contrasenia);
 				fflush(stdin);
 				result_2 = iniciarsesion_1(&iniciarsesion_1_arg, clnt1);
 				fflush(stdin);
@@ -348,7 +354,7 @@ gestion_usuarios_1(char *host)
 									
 							break;
 						case 6:
-							printf("\nSaliendo del programa.\n");				
+							printf("\nSaliendo del submenu.\n");				
 							break;
 						default:
 							break;
