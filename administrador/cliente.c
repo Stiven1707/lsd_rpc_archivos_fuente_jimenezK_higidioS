@@ -134,7 +134,6 @@ void abrirOCerrarSubasta(nodo_subasta *result_8,char *consultarproductoandvalora
 				{
                     printf("La subasta ha sido cerrada. El comprador es: \n");
 					// Imprimir los datos del cliente
-					printf("\nDatos del administrador ingresado:\n");
 					printf("Nombres: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.nombres);
 					printf("Apellidos: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.apellidos);
 					printf("Correo electrónico: %s\n", result_8->oferta_actual.objUsuario_comprador_actual.correo);
