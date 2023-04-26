@@ -189,7 +189,7 @@ gestion_usuarios_1(char *host)
 								{
 									printf("Codigo: %d\n", result_6->vector_productos[i].codigoProducto);
 									printf("Nombre: %s\n", result_6->vector_productos[i].nombre);
-									printf("Actualmente esta disponible para subastar: %s\n", result_6->vector_productos[i].estadoProd == SI ? "SI" : "NO");
+									printf("Actualmente se esta subastando: %s\n", result_6->vector_productos[i].estadoProd == NO ? "SI" : "NO");
 									printf("Precio base: %.2f\n", result_6->vector_productos[i].valor);
 									printf("====================\n");
 									i++;

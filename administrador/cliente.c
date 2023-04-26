@@ -19,20 +19,9 @@ void menuSubastaAdmin()
 	printf("\n 1. Registrar producto");
 	printf("\n 2. Listar productos a ofertar.");
 	printf("\n 3. Abrir o Cerrar subasta.");
-	printf("\n 4. Consultar producto por codigo.");
-	printf("\n 5. Consultar producto actual subastadose.");
-	printf("\n 6. Salir.");
+	printf("\n 4. Salir.");
 }
 
-void menuSubastaCliente()
-{
-	printf("\n====== menu cliente======");
-	printf("\n 1. Listar todos los productos.");
-	printf("\n 2. Consultar producto por codigo.");
-	printf("\n 3. Consultar producto actual subastadose.");
-	printf("\n 4. Ofertar al producto actual subastandose.");
-	printf("\n 5. Salir.");
-}
 
 datos_completos registrarAdmin(){
 	datos_completos  objUsuario;
@@ -312,54 +301,14 @@ gestion_usuarios_1(char *host)
 							abrirOCerrarSubasta(result_8,consultarproductoandvaloractualsubasta_2_arg,result_5,abrircerrarsubasta_2_arg,clnt2);
 							
 							break;
+						
 						case 4:
-							printf("Digite el codigo: ");
-							scanf("%d", &consultarproducto_2_arg);
-							
-							result_7 = consultarproducto_2(&consultarproducto_2_arg, clnt2);
-							if (result_7 == (nodo_producto *) NULL) {
-								clnt_perror (clnt2, "call failed");
-							}
-							else
-							{
-								if (result_7->codigoProducto==-1)
-								{
-									printf("No hay un producto registrado con codigo: %d \n",consultarproducto_2_arg);
-								}
-								else
-								{
-									printf("\nCodigo: %d", result_7->codigoProducto);
-									printf("\nNombre: %s", result_7->nombre);									
-									printf("\nActualmente esta disponible para subastar: %s", result_7->estadoProd == SI ? "SI" : "NO");						
-									printf("\nPrecio base: %.2f\n", result_7->valor);	
-								}								
-							}			
-							break;
-						case 5:
-							result_8 = consultarproductoandvaloractualsubasta_2((void*)&consultarproductoandvaloractualsubasta_2_arg, clnt2);
-							if (result_8 == (nodo_subasta *) NULL) {
-								clnt_perror(clnt2, "call failed");
-							}else
-							{
-								if (result_8->estado == NUEVA || result_8->estado == CERRADA || result_8->prod.codigoProducto==-1) { // Si no hay una subasta actual
-        							printf("No hay una subasta abierta actualmente.\n");
-								}else
-								{
-									printf("\nCodigo: %d", result_8->prod.codigoProducto);
-									printf("\nNombre: %s", result_8->prod.nombre);						
-									printf("\nPrecio actual: %.2f\n", result_8->oferta_actual.valor);
-								}
-								
-							}
-									
-							break;
-						case 6:
 							printf("\nSaliendo del submenu.\n");				
 							break;
 						default:
 							break;
 						}
-					} while (opcionInicio != 6);
+					} while (opcionInicio != 4);
 					
 				}
 	
