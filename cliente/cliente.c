@@ -158,13 +158,15 @@ gestion_usuarios_1(char *host)
 						switch (opcion)
 						{
 						case 1:
-							result_4= listarproductosdisponiblessubastar_2((void*)&listarproductosdisponiblessubastar_2_arg,clnt2);
-							if (result_4 == (vector_productos *) NULL) {
+							result_6 = listarproductostodos_2((void*)&listarproductostodos_2_arg, clnt2);
+							if (result_6 == (vector_productos *) NULL) {
 								clnt_perror(clnt2, "call failed");
 							}
 							printf("\nProductos disponibles para subasta:\n");
 							for (int i = 0; i < MAX_CAN_PROD; i++) {
-								printf("Codigo: %d\n", result_4->vector_productos[i].codigoProducto);
+								printf("Codigo: %d\n", result_6->vector_productos[i].codigoProducto);
+								printf("Nombre: %s\n", result_6->vector_productos[i].nombre);
+								printf("Valor: %f\n", result_6->vector_productos[i].valor);
                     		}
 							break;
 						case 2:
@@ -183,8 +185,24 @@ gestion_usuarios_1(char *host)
 							}
 							break;
 						case 3:
+							result_8 = consultarproductoandvaloractualsubasta_2((void*)&consultarproductoandvaloractualsubasta_2_arg, clnt2);
+							if (result_8 == (nodo_subasta *) NULL) {
+								clnt_perror(clnt2, "call failed");
+							}
+							else{
+								printf("\nCodigo: %d", result_8->prod.codigoProducto);
+							}
 							break;
 						case 4:
+							printf("Digite el valor que quiere subastar: ");
+							scanf("%f", &ofertarproductosubasta_2_arg);
+							result_9 = ofertarproductosubasta_2(&ofertarproductosubasta_2_arg, clnt2);
+							if (result_9 == (bool_t *) NULL) {
+								clnt_perror(clnt2, "call failed");
+							}
+							else{
+								printf("Valor agregadaa la subasta actual");
+							}
 							break;	
 						
 						case 5:
