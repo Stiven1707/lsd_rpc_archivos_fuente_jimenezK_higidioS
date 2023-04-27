@@ -43,22 +43,6 @@ datos_completos registrarAdmin(){
 		while ((c = getchar()) != '\n' && c != EOF);
 	}
 	
-	printf("Ingrese correo electrónico: ");
-	fgets(objUsuario.correo, MAXCORREO, stdin);
-	objUsuario.correo[strcspn(objUsuario.correo, "\n")] = '\0';
-	if (strlen(objUsuario.correo) == MAXCORREO-1 && objUsuario.correo[MAXCORREO-2] != '\n') {
-		int c;
-		while ((c = getchar()) != '\n' && c != EOF);
-	}
-	
-	printf("Ingrese teléfono: ");
-	fgets(objUsuario.telefono, MAXTEL, stdin);
-	objUsuario.telefono[strcspn(objUsuario.telefono, "\n")] = '\0';
-	if (strlen(objUsuario.telefono) == MAXTEL-1 && objUsuario.telefono[MAXTEL-2] != '\n') {
-		int c;
-		while ((c = getchar()) != '\n' && c != EOF);
-	}
-	
 	printf("Ingrese nombre de usuario: ");
 	fgets(objUsuario.login, MAXNOM, stdin);
 	objUsuario.login[strcspn(objUsuario.login, "\n")] = '\0';
